@@ -1,0 +1,41 @@
+{% extends "events/base.html" %}
+
+{% block content %}
+<h1>Events</h1>
+{% for event in event_list %}
+{% if event.approved %}
+    <div class="card">
+    <div class="card-header">
+    {{ event }}
+    </div>
+        <div class="card-body">
+            <li>Date: {{ event.event_date }}</li>
+            <li>Date till event: {{ event.Days_till }}</li>
+            <li>Occured: {{ event.Is_Past }}</li>
+            <li>Venue: {{ event.venue }}</li>
+            <li>Venue website: {{ event.venue.web }}</li>
+            <li>Manager: {{ event.manager }}</li>
+            <li>{{ event.description }}</li>
+            <li>Approved: {{ event.approved }}</li>
+            <li>Attendees: 
+                {% for user in event.attendees.all %}
+                {{ user }}
+                {% endfor %}
+                <br>
+            </li> 
+        </div>
+        {% if user.is_authenticated %}
+        {# и не забываем если уже разлогиниться на странице, то должно так же блокироваться #}
+            {% if event.manager == user %}
+            <div class="card-footer text-muted">    
+                <a href="{% url 'update-event' event.id %}" class="btn btn-secondary">Update Event</a>
+                <a href="{% url 'delete-event' event.id %}" class="btn btn-danger">Delete Event</a>
+            </div>
+
+            {% endif %}
+        {% endif %}
+    </div>
+{% endif %}
+<br>
+{% endfor %}
+{% endblock %}

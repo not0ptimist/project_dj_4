@@ -1,0 +1,28 @@
+{% extends "events/base.html" %}
+<!-- детальный просмотр Venue -->
+{% block content %}
+        <!-- <h1>{{ venue }}:</h1> -->
+        <br>
+            <div class="card">
+                <div class="card-header">
+                    Venue
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ venue }}</h5>
+                    <ul>
+                        <li>address: {{ venue.address }}</li>
+                        <li>zip_code: {{ venue.zip_code }}</li>
+                        <li>phone: {{ venue.phone }}</li>
+                        <li>email_address: {{ venue.email_address }}</li>
+                        <li>Website: <a href="{{ venue.web }}">{{ venue.web }}</a><br>
+                        <li>Owner: {{ venue_owner }}, {{ venue_owner.email }}</li>
+                        </li> 
+                    </ul>
+                    {% if venue.venue_image %} 
+                        <img src="{{ venue.venue_image.url }}" width="600"> 
+                    {% endif %}
+                  <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                </div>
+            </div>
+            <br>
+{% endblock %}

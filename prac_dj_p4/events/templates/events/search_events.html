@@ -1,0 +1,46 @@
+{% extends "events/base.html" %}
+
+{% block content %}
+<form method=POST action="{% url 'search_events' %}">
+    {% csrf_token %}
+    <input class="form-control me-2" type="search" placeholder="Search Events" aria-label="Search" name="searched">
+    <br>
+    <button class="btn btn-outline-success" type="submit">Search</button>
+</form>
+    {% if searched %}
+        <b>You searched for... {{ searched }} </b><br>
+        {% for event in events %}
+        <div class="card">
+        <div class="card-header">
+        {{ event }}
+        </div>
+            <div class="card-body">
+                <li>Date: {{ event.event_date }}</li>
+                <li>Venue: {{ event.venue }}</li>
+                <li>Venue website: {{ event.venue.web }}</li>
+                <li>Manager: {{ event.manager }}</li>
+                <li>{{ event.description }}</li>
+                <li>Attendees: 
+                    {% for user in event.attendees.all %}
+                    {{ user }}
+                    {% endfor %}
+                    <br>
+                </li> 
+            </div>
+            {% if user.is_authenticated %}
+            {# и не забываем если уже разлогиниться на странице, то должно так же блокироваться #}
+                {% if event.manager == user %}
+                <div class="card-footer text-muted">    
+                    <a href="{% url 'update-event' event.id %}" class="btn btn-secondary">Update Event</a>
+                    <a href="{% url 'delete-event' event.id %}" class="btn btn-danger">Delete Event</a>
+                </div>
+        
+                {% endif %}
+            {% endif %}
+        </div>
+        <br>
+        {% endfor %}
+    {% else %}
+        <h1>Hey! You forget to search for a Event...</h1>
+    {% endif %}
+{% endblock %}

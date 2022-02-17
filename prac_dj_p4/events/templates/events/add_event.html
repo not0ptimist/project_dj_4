@@ -1,0 +1,23 @@
+{% extends "events/base.html" %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    <h1>Add Event</h1>
+    {% if submitted %}
+        Your Event was submitted
+        Successfully!!!
+    {% else %}
+        <form action="" method=POST>
+            {% csrf_token %}
+            <!-- https://docs.djangoproject.com/en/4.0/ref/forms/api/#template-name-label -->
+            {{ form.as_p }}
+            <input type="submit" value="Submit" class="btn btn-success"/>
+        </form>
+    {% endif %}
+    </form>
+    <br>
+{% else %}
+<h1>Sorry, you must be logged in</h1>
+<a href="{% url 'login' %}">Login Here</a>
+{% endif %}
+{% endblock %}

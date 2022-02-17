@@ -1,0 +1,77 @@
+{% extends "events/base.html" %}
+
+{% block content %}
+<form action="" method=POST>
+{% csrf_token %}
+<!-- Count Event, Venue, User -->
+<div class="card">
+    <div class="card-header">
+      Event - Venue - User
+    </div>
+    <div class="card-body">
+        <h5 class="card-text">Event: {{ event_count }}</h5>
+        <h5 class="card-text">Venue: {{ venue_count }}</h5>
+        <h5 class="card-text">User: {{ user_count }}</h5>
+    </div>
+</div>
+<br>
+<!-- Venue List -->
+<h1>Venue List</h1>
+<table class="table table-striped table-hover table-bordered">
+    <thead>
+        <!-- Заголовок колонок-->
+        <tr>
+            <th scope="col">Venues</th>
+            <th scope="col">Events</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for venue in venue_list %}
+    <!-- Event List -->
+        <tr>
+            <td>
+                <a href="{% url 'show-venue' venue.id %}">{{ venue }}</a></td>
+            <td>
+                <a href="{% url 'venue_event' venue.id %}" class="btn btn-sm btn-secondary">List Event</a></td>
+            <!-- <td>
+                <button class="btn btn-secondary" type="submit">Event</button>
+            </td> -->
+        </tr>
+    <!-- End Event List -->
+    {% endfor %}
+    </tbody>
+</table><br>
+<!--  -->
+<h1>Admin Event approval list</h1><br>
+<table class="table table-striped table-hover table-bordered">
+    <thead>
+        <!-- Заголовок колонок-->
+        <tr>
+            <th scope="col">Event Name</th>
+            <th scope="col">Approved</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for event in event_list %}
+    <!-- Event List -->
+        <tr>
+            <td>{{ event }}</td>
+            <td>
+                {% if event.approved %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" checked="checked" value={{ event.id }} name="boxes">
+                    </div>
+                {% else %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value={{ event.id }} name="boxes">
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+    <!-- End Event List -->
+    {% endfor %}
+    </tbody>
+</table><br>
+<button class="btn btn-secondary" type="submit">Update Approved</button>
+</form>
+{% endblock %}
